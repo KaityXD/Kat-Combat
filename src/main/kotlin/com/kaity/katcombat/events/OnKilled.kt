@@ -1,5 +1,6 @@
 package com.kaity.katcombat.events
 
+import com.kaity.katcombat.KatCombat
 import com.kaity.katcombat.managers.Combat
 import com.kaity.katcombat.managers.Effects
 import com.kaity.katcombat.utils.Messages
@@ -12,6 +13,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.persistence.PersistentDataType
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -55,10 +57,16 @@ class OnKilled(private val combat: Combat) : Listener {
                         val date = dateFormat.format(Date())
                         
                         val lore = listOf(
-                            Messages.parse("<green>☠ Killer: <white>${killer.name}"),
-                            Messages.parse("<green>⌛ Time:   <white>$date")
+                            Messages.parse("<gray>☠ killer: <white>${killer.name}"),
+                            Messages.parse("<gray>⌛ Time:   <white>$date")
                         )
                         meta.lore(lore)
+
+                        val killerKey = NamespacedKey(KatCombat.instance, "head_killer")
+                        val timeKey = NamespacedKey(KatCombat.instance, "head_time")
+                        meta.persistentDataContainer.set(killerKey, PersistentDataType.STRING, killer.name)
+                        meta.persistentDataContainer.set(timeKey, PersistentDataType.STRING, date)
+
                         head.itemMeta = meta
                         
                         e.drops.add(head)

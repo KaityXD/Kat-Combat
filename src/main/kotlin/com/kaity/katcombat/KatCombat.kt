@@ -29,6 +29,7 @@ class KatCombat : JavaPlugin() {
         server.pluginManager.registerEvents(OnQuit(combat), this)
         server.pluginManager.registerEvents(OnMove(combat), this)
         server.pluginManager.registerEvents(OnGlide(combat), this)
+        server.pluginManager.registerEvents(OnHeadPlaceBreak(), this)
 
         logger.info("KatCombat has been enabled!")
     }
