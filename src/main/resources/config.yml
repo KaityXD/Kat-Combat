@@ -1,0 +1,90 @@
+# KatCombat Configuration
+
+# Combat Duration in seconds
+combat-duration: 15
+
+# Messages (all support MiniMessage - <color>, <hover>, <click>, etc.)
+# Use <time> for remaining seconds, <player> for player name, <killer> for killer name, <cmd> for blocked command
+messages:
+
+# subtle gradient on the icon, muted text
+  combat-tagged: "<gradient:#ff5555:#cc0000>⚔</gradient> <gray>in combat. don't log out.</gray>"
+  
+  # barely takes up screen space above the hotbar
+  combat-actionbar: "<gradient:#ff5555:#cc0000>combat</gradient> <dark_gray>•</dark_gray> <white><time>s</white>"
+  
+  # simple green gradient checkmark
+  combat-expired: "<gradient:#55ff55:#22cc22>✔</gradient> <gray>out of combat.</gray>"
+  
+  # direct, no yelling
+  combat-disconnect-warning: "<gradient:#ff5555:#cc0000>✖</gradient> <gray>can't log out right now.</gray>"
+  
+  # clean variable replacement
+  command-blocked: "<gradient:#ff5555:#cc0000>✖</gradient> <gray><cmd> is blocked in combat.</gray>"
+  
+  # short broadcast
+  combat-logger-death: "<gradient:#ff5555:#cc0000>☠</gradient> <white><player></white> <gray>combat logged.</gray>"
+  
+  # zero fluff kill feed
+  player-killed: "<white><killer></white> <gradient:#ff5555:#cc0000>⚔</gradient> <white><player></white>"
+
+  # Death messages (for players in combat)
+  death-fall: "<gray><player> <dark_red>fell from the sky</dark_red>"
+  death-lava: "<gray><player> <dark_red>burned in lava</dark_red>"
+  death-fire: "<gray><player> <dark_red>got too close to fire</dark_red>"
+  death-drowning: "<gray><player> <dark_red>drowned</dark_red>"
+  death-void: "<gray><player> <dark_red>fell into the void</dark_red>"
+  death-mob: "<gray><player> <dark_red>was slain by a mob</dark_red>"
+  death-explosion: "<gray><player> <dark_red>exploded</dark_red>"
+  death-magic: "<gray><player> <dark_red>was killed by magic</dark_red>"
+  death-poison: "<gray><player> <dark_red>was poisoned</dark_red>"
+  death-wither: "<gray><player> <dark_red>withered away</dark_red>"
+  death-cactus: "<gray><player> <dark_red>pricked to death</dark_red>"
+  death-falling-block: "<gray><player> <dark_red>was crushed</dark_red>"
+  death-lightning: "<gray><player> <dark_red>was struck by lightning</dark_red>"
+  death-default: "<gray><player> <dark_red>died</dark_red>"
+
+# Settings
+settings:
+  # Broadcast combat events to all players
+  broadcast-deaths: true
+  
+  # Log combat events to console
+  log-to-console: true
+  
+  # Prevent disconnection while in combat
+  prevent-disconnect: true
+  
+  # Show combat timer on actionbar
+  show-actionbar-timer: true
+
+  # Toggle player fly state so they cannot fly in PvP
+  disable-flight: true
+
+  # Change player's game mode to survival in PvP
+  force-survival: true
+
+  # Max elytra flight distance in combat (blocks). Set to 0 to disable killing.
+  kill-on-elytra-distance: 0
+
+# Blocked Commands (case-insensitive, no "/" prefix)
+blocked-commands:
+  - "home"
+  - "tpa"
+  - "spawn"
+  - "warp"
+  - "rtp"
+  - "back"
+  - "vote"
+  - "gamemode"
+  
+# Whitelist mode - if true, only commands in allowed-commands work
+# If false, commands in blocked-commands are blocked
+whitelist-mode: false
+
+# Allowed commands (used when whitelist-mode is true)
+allowed-commands:
+  - "msg"
+  - "reply"
+  - "help"
+  - "combat"
