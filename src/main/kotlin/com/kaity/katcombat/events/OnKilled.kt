@@ -2,12 +2,18 @@ package com.kaity.katcombat.events
 
 import com.kaity.katcombat.managers.Combat
 import com.kaity.katcombat.managers.Effects
+import com.kaity.katcombat.utils.Messages
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.Registry
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.SkullMeta
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class OnKilled(private val combat: Combat) : Listener {
 
@@ -36,6 +42,27 @@ class OnKilled(private val combat: Combat) : Listener {
 
                 if (Effects.hasEffectEnabled(killer)) {
                     Effects.playDeathEffects(killer, victim)
+                }
+
+                if (combat.config.dropHeadEnabled) {
+                    val chance = combat.config.dropHeadChance
+                    if (Math.random() * 100 < chance) {
+                        val head = ItemStack(Material.PLAYER_HEAD)
+                        val meta = head.itemMeta as SkullMeta
+                        meta.owningPlayer = victim
+                        
+                        val dateFormat = SimpleDateFormat("dd/MM/yy , HH:mm")
+                        val date = dateFormat.format(Date())
+                        
+                        val lore = listOf(
+                            Messages.parse("<green>☠ Killer: <white>${killer.name}"),
+                            Messages.parse("<green>⌛ Time:   <white>$date")
+                        )
+                        meta.lore(lore)
+                        head.itemMeta = meta
+                        
+                        e.drops.add(head)
+                    }
                 }
             }
             combat.untagPlayer(victim)

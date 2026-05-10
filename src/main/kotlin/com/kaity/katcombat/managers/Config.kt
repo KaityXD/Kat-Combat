@@ -52,6 +52,12 @@ class Config(private val plugin: JavaPlugin) {
     val allowedCommands: List<String>
         get() = config.getStringList("allowed-commands").map { it.lowercase() }
 
+    val dropHeadEnabled: Boolean
+        get() = config.getBoolean("drophead.enable", true)
+
+    val dropHeadChance: Double
+        get() = config.getDouble("drophead.chance", 6.0)
+
     fun getMessage(path: String): String {
         return config.getString("messages.$path", "") ?: ""
     }

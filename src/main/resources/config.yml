@@ -68,7 +68,7 @@ settings:
   kill-on-elytra-distance: 0
   
   # Sound played when a player dies in combat. Set to "NONE" to disable.
-  death-sound: "ENTITY_LIGHTNING_BOLT_THUNDER"
+  death-sound: "BLOCK_RESPAWN_ANCHOR_DEPLETE"
 
 # Blocked Commands (case-insensitive, no "/" prefix)
 blocked-commands:
@@ -83,7 +83,7 @@ blocked-commands:
   
 # Whitelist mode - if true, only commands in allowed-commands work
 # If false, commands in blocked-commands are blocked
-whitelist-mode: false
+whitelist-mode: true
 
 # Allowed commands (used when whitelist-mode is true)
 allowed-commands:
@@ -91,3 +91,9 @@ allowed-commands:
   - "reply"
   - "help"
   - "combat"
+
+# Head Drop Settings
+drophead:
+  enable: true
+  # Chance to drop head in percentage (e.g. 6.0 = 6%)
+  chance: 6.0
