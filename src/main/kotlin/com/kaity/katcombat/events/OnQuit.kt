@@ -1,21 +1,23 @@
 package com.kaity.katcombat.events
 
-import com.kaity.katcombat.managers.CombatManager
+import com.kaity.katcombat.managers.Combat
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerQuitEvent
 
-class OnQuit(private val combatManager: CombatManager) : Listener {
+class OnQuit(private val combat: Combat) : Listener {
 
     @EventHandler
     fun onQuit(e: PlayerQuitEvent) {
         val player = e.player
         
-        if (combatManager.isInCombat(player)) {
-            combatManager.broadcastCombatLogger(player)
-            player.health = 0.0 // Kill for combat logging
+        if (combat.isInCombat(player)) {
+            if (!player.isDead) {
+                combat.broadcastCombatLogger(player)
+                player.health = 0.0 // Kill for combat logging
+            }
         }
         
-        combatManager.untagPlayer(player)
+        combat.untagPlayer(player)
     }
 }

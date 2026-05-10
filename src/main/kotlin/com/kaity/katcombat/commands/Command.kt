@@ -1,20 +1,20 @@
 package com.kaity.katcombat.commands
 
 import com.kaity.katcombat.KatCombat
-import com.kaity.katcombat.managers.CombatManager
-import com.kaity.katcombat.managers.EffectManager
+import com.kaity.katcombat.managers.Combat
+import com.kaity.katcombat.managers.Effects
 import com.kaity.katcombat.utils.CommandBuilder
-import com.kaity.katcombat.utils.MessageUtils.sendMessageMini
+import com.kaity.katcombat.utils.Messages.sendMessageMini
 
-class CombatCommand(private val plugin: KatCombat, private val combatManager: CombatManager) {
+class Command(private val plugin: KatCombat, private val combat: Combat) {
 
     fun register() {
         CommandBuilder("combat", "Combat commands")
             .execute { player, args ->
                 if (args.isEmpty()) {
-                    if (combatManager.isInCombat(player)) {
-                        val remaining = combatManager.getRemainingTime(player)
-                        val killer = combatManager.getKiller(player)
+                    if (combat.isInCombat(player)) {
+                        val remaining = combat.getRemainingTime(player)
+                        val killer = combat.getKiller(player)
                         
                         val message = if (killer != null) {
                             "<red>Combat: <gold>${remaining}s <dark_gray>| Killer: <red>$killer"
@@ -34,11 +34,11 @@ class CombatCommand(private val plugin: KatCombat, private val combatManager: Co
                             player.sendMessageMini("<red>You don't have permission!")
                             return@execute
                         }
-                        combatManager.config.reload()
+                        combat.config.reload()
                         player.sendMessageMini("<green>Config reloaded!")
                     }
                     "effect" -> {
-                        val enabled = EffectManager.toggleEffect(player)
+                        val enabled = Effects.toggleEffect(player)
                         if (enabled) {
                             player.sendMessageMini("<green>Kill effect <bold>ENABLED</bold>!")
                         } else {

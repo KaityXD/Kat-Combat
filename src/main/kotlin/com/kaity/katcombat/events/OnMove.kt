@@ -1,22 +1,23 @@
 package com.kaity.katcombat.events
 
-import com.kaity.katcombat.managers.CombatManager
+import com.kaity.katcombat.managers.Combat
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 
-class OnMove(private val combatManager: CombatManager) : Listener {
+class OnMove(private val combat: Combat) : Listener {
 
     @EventHandler
     fun onMove(e: PlayerMoveEvent) {
         val player = e.player
+        if (player.isDead) return
         if (!player.isGliding) return
         
-        val maxDistance = combatManager.config.killOnElytraDistance
+        val maxDistance = combat.config.killOnElytraDistance
         if (maxDistance <= 0) return
         
-        if (!combatManager.isInCombat(player)) return
-        val session = combatManager.getSession(player) ?: return
+        if (!combat.isInCombat(player)) return
+        val session = combat.getSession(player) ?: return
         
         val startLoc = session.elytraStartLocation ?: return
         

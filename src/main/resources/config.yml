@@ -66,6 +66,9 @@ settings:
 
   # Max elytra flight distance in combat (blocks). Set to 0 to disable killing.
   kill-on-elytra-distance: 0
+  
+  # Sound played when a player dies in combat. Set to "NONE" to disable.
+  death-sound: "ENTITY_LIGHTNING_BOLT_THUNDER"
 
 # Blocked Commands (case-insensitive, no "/" prefix)
 blocked-commands:

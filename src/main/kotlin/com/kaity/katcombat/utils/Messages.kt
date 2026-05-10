@@ -4,7 +4,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.entity.Player
 
-object MessageUtils {
+object Messages {
     private val mm = MiniMessage.miniMessage()
 
     fun parse(msg: String): Component = mm.deserialize(msg)

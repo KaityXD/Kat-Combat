@@ -3,7 +3,7 @@ package com.kaity.katcombat.managers
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 
-class ConfigManager(private val plugin: JavaPlugin) {
+class Config(private val plugin: JavaPlugin) {
     private var config: FileConfiguration = plugin.config
 
     init {
@@ -39,6 +39,9 @@ class ConfigManager(private val plugin: JavaPlugin) {
         
     val killOnElytraDistance: Double
         get() = config.getDouble("settings.kill-on-elytra-distance", 120.0)
+        
+    val deathSound: String
+        get() = config.getString("settings.death-sound", "ENTITY_LIGHTNING_BOLT_THUNDER") ?: "ENTITY_LIGHTNING_BOLT_THUNDER"
 
     val whitelistMode: Boolean
         get() = config.getBoolean("whitelist-mode", false)

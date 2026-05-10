@@ -1,6 +1,6 @@
 #!/bin/bash
 export JAVA_HOME=/opt/jdk-21
-GRADLE_PATH=/bin/gradle
+GRADLE_PATH=/home/kaity/.gemini/tmp/gradle9/gradle-9.4.1/bin/gradle
 
 echo "Starting build with Java 21 and Gradle 9.4.1..."
 if ! $GRADLE_PATH clean shadowJar; then

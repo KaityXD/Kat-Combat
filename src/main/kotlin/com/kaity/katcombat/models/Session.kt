@@ -2,9 +2,8 @@ package com.kaity.katcombat.models
 
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import org.bukkit.Location
-import org.bukkit.entity.Player
 
-data class CombatSession(
+data class Session(
     var endTime: Long,
     var killer: String?,
     var actionBarTask: ScheduledTask? = null,

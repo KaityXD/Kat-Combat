@@ -8,7 +8,7 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataType
 
-object EffectManager {
+object Effects {
     private val effectKey = NamespacedKey(KatCombat.instance, "killeffect")
 
     fun toggleEffect(player: Player): Boolean {
@@ -70,14 +70,10 @@ object EffectManager {
         val world = location.world ?: return
         val center = location.clone().add(0.0, 1.0, 0.0)
 
-        // Soul sand / soul speed sound
         world.playSound(center, Sound.PARTICLE_SOUL_ESCAPE, 1.0f, 1.0f)
         world.playSound(center, Sound.BLOCK_SOUL_SAND_STEP, 1.0f, 0.5f)
 
-        // Blue soul fire flames
         world.spawnParticle(Particle.SOUL_FIRE_FLAME, center, 25, 0.5, 0.5, 0.5, 0.05)
-        
-        // Soul particles rising up
         world.spawnParticle(Particle.SOUL, center, 20, 0.4, 0.5, 0.4, 0.1)
     }
 }
