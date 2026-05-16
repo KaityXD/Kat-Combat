@@ -12,6 +12,8 @@ class OnAttacked(private val combat: Combat) : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onAttacked(e: EntityDamageByEntityEvent) {
+        if (e.damage <= 0) return
+
         val damaged = e.entity as? org.bukkit.entity.Player ?: return
         var damager = e.damager
 

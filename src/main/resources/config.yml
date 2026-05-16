@@ -9,25 +9,25 @@ messages:
 
 # subtle gradient on the icon, muted text
   combat-tagged: "<gradient:#ff5555:#cc0000>⚔</gradient> <gray>in combat. don't log out.</gray>"
-  
+
   # barely takes up screen space above the hotbar
   combat-actionbar: "<gradient:#ff5555:#cc0000>combat</gradient> <dark_gray>•</dark_gray> <white><time>s</white>"
-  
+
   # simple green gradient checkmark
   combat-expired: "<gradient:#55ff55:#22cc22>✔</gradient> <gray>out of combat.</gray>"
-  
+
   # direct, no yelling
   combat-disconnect-warning: "<gradient:#ff5555:#cc0000>✖</gradient> <gray>can't log out right now.</gray>"
-  
+
   # clean variable replacement
   command-blocked: "<gradient:#ff5555:#cc0000>✖</gradient> <gray><cmd> is blocked in combat.</gray>"
-  
+
   # short broadcast
   combat-logger-death: "<gradient:#ff5555:#cc0000>☠</gradient> <white><player></white> <gray>combat logged.</gray>"
 
   # safe zone entry blocked
   safezone-blocked: "<gradient:#ff5555:#cc0000>✖</gradient> <gray>You cannot enter safe zones while in combat.</gray>"
-  
+
   # zero fluff kill feed
   player-killed: "<white><killer></white> <gradient:#ff5555:#cc0000>⚔</gradient> <white><player></white>"
 
@@ -45,19 +45,28 @@ messages:
   death-cactus: "<gray><player> <dark_red>pricked to death</dark_red>"
   death-falling-block: "<gray><player> <dark_red>was crushed</dark_red>"
   death-lightning: "<gray><player> <dark_red>was struck by lightning</dark_red>"
+  death-starvation: "<gray><player> <dark_red>starved to death</dark_red>"
+  death-suffocation: "<gray><player> <dark_red>suffocated</dark_red>"
+  death-thorns: "<gray><player> <dark_red>was pricked by thorns</dark_red>"
+  death-hot-floor: "<gray><player> <dark_red>discovered the floor was lava</dark_red>"
+  death-cramming: "<gray><player> <dark_red>was squished too much</dark_red>"
+  death-freeze: "<gray><player> <dark_red>froze to death</dark_red>"
+  death-dragon-breath: "<gray><player> <dark_red>was roasted by dragon breath</dark_red>"
+  death-fly-into-wall: "<gray><player> <dark_red>experienced kinetic energy</dark_red>"
+  death-sonic-boom: "<gray><player> <dark_red>was obliterated by a sonic boom</dark_red>"
   death-default: "<gray><player> <dark_red>died</dark_red>"
 
 # Settings
 settings:
   # Broadcast combat events to all players
   broadcast-deaths: true
-  
+
   # Log combat events to console
   log-to-console: true
-  
+
   # Prevent disconnection while in combat
   prevent-disconnect: true
-  
+
   # Show combat timer on actionbar
   show-actionbar-timer: true
 
@@ -69,7 +78,7 @@ settings:
 
   # Max elytra flight distance in combat (blocks). Set to 0 to disable killing.
   kill-on-elytra-distance: 0
-  
+
   # Sound played when a player dies in combat. Set to "NONE" to disable.
   death-sound: "BLOCK_RESPAWN_ANCHOR_DEPLETE"
 
@@ -79,6 +88,15 @@ settings:
 
   # Block players from entering safe zones (WorldGuard no-PvP regions) while in combat
   block-safezone-entry: true
+
+  # Block teleportation while in combat (ender pearls, chorus fruit, plugin teleports, etc.)
+  block-teleport: true
+
+  # Prevent dropping items while in combat
+  block-item-drop: true
+
+  # Use boss bar instead of action bar for combat timer
+  use-boss-bar: false
 
 # Blocked Commands (case-insensitive, no "/" prefix)
 blocked-commands:
@@ -90,7 +108,7 @@ blocked-commands:
   - "back"
   - "vote"
   - "gamemode"
-  
+
 # Whitelist mode - if true, only commands in allowed-commands work
 # If false, commands in blocked-commands are blocked
 whitelist-mode: true
@@ -107,3 +125,6 @@ drophead:
   enable: true
   # Chance to drop head in percentage (e.g. 6.0 = 6%)
   chance: 6.0
+
+# Config version - do not modify (used for automatic migration)
+config-version: 1

@@ -11,9 +11,9 @@ class OnCommand(private val combat: Combat) : Listener {
     @EventHandler
     fun onCommand(e: PlayerCommandPreprocessEvent) {
         if (!combat.isInCombat(e.player)) return
-        
+
         val command = e.message.removePrefix("/").lowercase().split(" ")[0]
-        
+
         if (combat.config.isCommandBlocked(command)) {
             val msg = combat.config.getMessage("command-blocked").replace("<cmd>", command)
             e.player.sendMessageMini(msg)

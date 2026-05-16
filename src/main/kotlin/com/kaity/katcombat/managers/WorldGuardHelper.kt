@@ -5,8 +5,10 @@ import org.bukkit.plugin.java.JavaPlugin
 
 object WorldGuardHelper {
     private var worldGuardEnabled = false
+    private lateinit var plugin: JavaPlugin
 
     fun init(plugin: JavaPlugin) {
+        this.plugin = plugin
         worldGuardEnabled = plugin.server.pluginManager.getPlugin("WorldGuard") != null
     }
 
@@ -23,6 +25,7 @@ object WorldGuardHelper {
             val state = set.queryValue(null, com.sk89q.worldguard.protection.flags.Flags.PVP)
             state != com.sk89q.worldguard.protection.flags.StateFlag.State.DENY
         } catch (e: Exception) {
+            plugin.logger.warning("WorldGuard PvP check failed: ${e.message}")
             true
         }
     }

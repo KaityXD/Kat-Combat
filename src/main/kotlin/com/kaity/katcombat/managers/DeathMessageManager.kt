@@ -1,13 +1,16 @@
 package com.kaity.katcombat.managers
 
+import com.kaity.katcombat.models.Session
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
-import com.kaity.katcombat.models.Session
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.Damageable
 
 object DeathMessageManager {
 
@@ -21,45 +24,36 @@ object DeathMessageManager {
         config: Config
     ): Component {
         val combatDuration = session?.let {
-            val durationMs = System.currentTimeMillis() - it.combatStartTime
-            formatDuration(durationMs)
-        } ?: "unknown"
+            formatDuration(System.currentTimeMillis() - it.combatStartTime)
+        } ?: "?"
 
-        val killerHealth = String.format("%.1f", killer.health)
-        val killerMaxHealth = String.format("%.1f", killer.getAttribute(org.bukkit.attribute.Attribute.MAX_HEALTH)?.value ?: 20.0)
+        val maxHealth = killer.getAttribute(Attribute.MAX_HEALTH)?.value ?: 20.0
+        val healthBar = buildHealthBar(killer.health, maxHealth)
 
         val totems = countTotems(killer.inventory)
         val potions = countPotions(killer.inventory)
-
-        val weapon = killer.inventory.itemInMainHand
-        val weaponComponent = if (weapon.type.isAir) {
-            Component.text("Fists", TextColor.color(0xFFFFFF))
-        } else {
-            val meta = weapon.itemMeta
-            if (meta != null && meta.hasDisplayName()) {
-                meta.displayName() ?: Component.text(weapon.type.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() })
-            } else {
-                Component.text(weapon.type.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercase() })
-            }
-        }
+        val weapon = formatWeapon(killer.inventory.itemInMainHand)
 
         val hover = Component.text()
-            .append(mm.deserialize("<gradient:#ff5555:#cc0000>⚔ Combat Stats</gradient>"))
+            .append(mm.deserialize("<#ff4757><b>╍╍╍ COMBAT REPORT ╍╍╍"))
             .append(Component.newline())
-            .append(mm.deserialize("<gray>Killer: <white>${killer.name}</white>"))
             .append(Component.newline())
-            .append(mm.deserialize("<gray>Health: <red>${killerHealth}</red><gray>/</gray><red>${killerMaxHealth}</red> ❤"))
+            .append(mm.deserialize("<#747d8c>Killer: <#ffffff><b>${killer.name}</b>"))
             .append(Component.newline())
-            .append(mm.deserialize("<gray>Totems: <yellow>${totems}</yellow>"))
+            .append(mm.deserialize("<#747d8c>Health: ")).append(healthBar)
             .append(Component.newline())
-            .append(mm.deserialize("<gray>Potions: <aqua>${potions}</aqua>"))
             .append(Component.newline())
-            .append(Component.text("Weapon: ", TextColor.color(0xAAAAAA)))
-            .append(weaponComponent)
+            .append(mm.deserialize(" <#ffa502>🛡 Totems: <#ffffff><b>$totems</b>"))
             .append(Component.newline())
-            .append(mm.deserialize("<gray>Combat Duration: <green>${combatDuration}</green>"))
+            .append(mm.deserialize(" <#2ed573>⚗ Potions: <#ffffff><b>$potions</b>"))
             .append(Component.newline())
-            .append(mm.deserialize("<dark_gray>Click to view inventory"))
+            .append(mm.deserialize(" <#eccc68>⚔ Weapon: ")).append(weapon)
+            .append(Component.newline())
+            .append(Component.newline())
+            .append(mm.deserialize("<#747d8c>Combat Duration: <#2ed573><b>$combatDuration</b>"))
+            .append(Component.newline())
+            .append(Component.newline())
+            .append(mm.deserialize("<#57606f>➤ Click to view inventory"))
             .build()
 
         val baseMessage = config.getMessage("player-killed")
@@ -71,15 +65,63 @@ object DeathMessageManager {
             .clickEvent(ClickEvent.runCommand("/kcview $inventoryKey"))
     }
 
+    private fun buildHealthBar(current: Double, max: Double): Component {
+        val filled = ((current / max) * 10).toInt().coerceIn(0, 10)
+        val empty = 10 - filled
+        val bar = buildString {
+            append("<#ff4757>")
+            repeat(filled) { append("❤") }
+            append("<#2f3542>")
+            repeat(empty) { append("❤") }
+        }
+        return mm.deserialize("$bar <#747d8c>${"%.1f".format(current)}<dark_gray>/<#747d8c>${"%.1f".format(max)}")
+    }
+
+    private fun formatWeapon(weapon: ItemStack): Component {
+        if (weapon.type.isAir) {
+            return mm.deserialize("<#ffffff><b>Fists</b> <#747d8c>(bare handed)")
+        }
+
+        val meta = weapon.itemMeta
+        val name = if (meta != null && meta.hasDisplayName() && meta.displayName() != null) {
+            meta.displayName()!!
+        } else {
+            val pretty = weapon.type.name.replace("_", " ").lowercase()
+                .replaceFirstChar { it.uppercase() }
+            Component.text(pretty, TextColor.color(0xFFFFFF))
+        }
+
+        val durability = (meta as? Damageable)?.let {
+            val max = weapon.type.maxDurability.toInt()
+            val left = max - it.damage
+            if (max > 0) " <#747d8c>($left<dark_gray>/<#747d8c>$max)" else ""
+        } ?: ""
+
+        val enchants = if (meta != null && meta.hasEnchants()) {
+            val list = meta.enchants.map { (ench, lvl) ->
+                "<#a29bfe>${ench.key.key.replace("_", " ").lowercase()} <#ffffff>$lvl"
+            }.joinToString(", ")
+            " <#57606f>[$list<#57606f>]"
+        } else ""
+
+        return Component.text()
+            .append(name)
+            .append(mm.deserialize(durability))
+            .append(mm.deserialize(enchants))
+            .build()
+    }
+
     private fun countTotems(inv: org.bukkit.inventory.PlayerInventory): Int {
-        val storage = inv.storageContents?.filterNotNull()?.filter { it.type == Material.TOTEM_OF_UNDYING }?.sumOf { it.amount } ?: 0
-        val armor = inv.armorContents?.filterNotNull()?.filter { it.type == Material.TOTEM_OF_UNDYING }?.sumOf { it.amount } ?: 0
-        val offhand = if (inv.itemInOffHand.type == Material.TOTEM_OF_UNDYING) inv.itemInOffHand.amount else 0
-        return storage + armor + offhand
+        val types = setOf(Material.TOTEM_OF_UNDYING)
+        return countItems(inv, types)
     }
 
     private fun countPotions(inv: org.bukkit.inventory.PlayerInventory): Int {
         val types = setOf(Material.POTION, Material.SPLASH_POTION, Material.LINGERING_POTION)
+        return countItems(inv, types)
+    }
+
+    private fun countItems(inv: org.bukkit.inventory.PlayerInventory, types: Set<Material>): Int {
         val storage = inv.storageContents?.filterNotNull()?.filter { it.type in types }?.sumOf { it.amount } ?: 0
         val armor = inv.armorContents?.filterNotNull()?.filter { it.type in types }?.sumOf { it.amount } ?: 0
         val offhand = if (inv.itemInOffHand.type in types) inv.itemInOffHand.amount else 0
@@ -87,13 +129,12 @@ object DeathMessageManager {
     }
 
     private fun formatDuration(ms: Long): String {
-        val seconds = ms / 1000
-        val minutes = seconds / 60
-        val remainingSeconds = seconds % 60
-        return if (minutes > 0) {
-            "${minutes}m ${remainingSeconds}s"
-        } else {
-            "${remainingSeconds}s"
+        val s = ms / 1000
+        val m = s / 60
+        val rs = s % 60
+        return when {
+            m > 0 -> "${m}m ${rs}s"
+            else -> "${rs}s"
         }
     }
 }

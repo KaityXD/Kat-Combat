@@ -30,16 +30,16 @@ class Config(private val plugin: JavaPlugin) {
 
     val showActionbarTimer: Boolean
         get() = config.getBoolean("settings.show-actionbar-timer", true)
-        
+
     val disableFlight: Boolean
         get() = config.getBoolean("settings.disable-flight", true)
-        
+
     val forceSurvival: Boolean
         get() = config.getBoolean("settings.force-survival", true)
-        
+
     val killOnElytraDistance: Double
         get() = config.getDouble("settings.kill-on-elytra-distance", 120.0)
-        
+
     val deathSound: String
         get() = config.getString("settings.death-sound", "ENTITY_LIGHTNING_BOLT_THUNDER") ?: "ENTITY_LIGHTNING_BOLT_THUNDER"
 
@@ -48,6 +48,15 @@ class Config(private val plugin: JavaPlugin) {
 
     val blockSafezoneEntry: Boolean
         get() = config.getBoolean("settings.block-safezone-entry", true)
+
+    val blockTeleport: Boolean
+        get() = config.getBoolean("settings.block-teleport", true)
+
+    val blockItemDrop: Boolean
+        get() = config.getBoolean("settings.block-item-drop", true)
+
+    val useBossBar: Boolean
+        get() = config.getBoolean("settings.use-boss-bar", false)
 
     val whitelistMode: Boolean
         get() = config.getBoolean("whitelist-mode", false)
@@ -63,6 +72,9 @@ class Config(private val plugin: JavaPlugin) {
 
     val dropHeadChance: Double
         get() = config.getDouble("drophead.chance", 6.0)
+
+    val configVersion: Int
+        get() = config.getInt("config-version", 1)
 
     fun getMessage(path: String): String {
         return config.getString("messages.$path", "") ?: ""

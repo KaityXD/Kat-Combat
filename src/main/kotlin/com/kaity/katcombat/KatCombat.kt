@@ -7,11 +7,12 @@ import com.kaity.katcombat.managers.Combat
 import com.kaity.katcombat.managers.Config
 import com.kaity.katcombat.managers.InventoryViewer
 import com.kaity.katcombat.managers.WorldGuardHelper
+import com.kaity.katcombat.utils.KatCombatExpansion
 import org.bukkit.plugin.java.JavaPlugin
 
 class KatCombat : JavaPlugin() {
     lateinit var combat: Combat
-    lateinit var config: Config
+    lateinit var pluginConfig: Config
     lateinit var inventoryViewer: InventoryViewer
 
     companion object {
@@ -21,8 +22,8 @@ class KatCombat : JavaPlugin() {
 
     override fun onEnable() {
         instance = this
-        config = Config(this)
-        combat = Combat(this, config)
+        pluginConfig = Config(this)
+        combat = Combat(this, pluginConfig)
         inventoryViewer = InventoryViewer(this)
 
         WorldGuardHelper.init(this)
@@ -35,12 +36,16 @@ class KatCombat : JavaPlugin() {
         server.pluginManager.registerEvents(OnAttacked(combat), this)
         server.pluginManager.registerEvents(OnCommand(combat), this)
         server.pluginManager.registerEvents(OnQuit(combat), this)
+        server.pluginManager.registerEvents(OnJoin(combat), this)
         server.pluginManager.registerEvents(OnMove(combat), this)
         server.pluginManager.registerEvents(OnGlide(combat), this)
         server.pluginManager.registerEvents(OnHeadPlaceBreak(), this)
+        server.pluginManager.registerEvents(OnTeleport(combat), this)
+        server.pluginManager.registerEvents(OnDropItem(combat), this)
+        server.pluginManager.registerEvents(OnFish(combat), this)
 
         // Register ProtocolLib packet listener if available and configured
-        if (config.attackDetectionMode == "packet") {
+        if (pluginConfig.attackDetectionMode == "packet") {
             if (server.pluginManager.getPlugin("ProtocolLib") != null) {
                 try {
                     ProtocolLibrary.getProtocolManager()
@@ -53,6 +58,16 @@ class KatCombat : JavaPlugin() {
             } else {
                 logger.warning("ProtocolLib not found but attack-detection-mode is set to 'packet'.")
                 logger.warning("Falling back to damage-based attack detection.")
+            }
+        }
+
+        // Register PlaceholderAPI expansion
+        if (server.pluginManager.getPlugin("PlaceholderAPI") != null) {
+            try {
+                KatCombatExpansion(this).register()
+                logger.info("KatCombat PlaceholderAPI expansion registered.")
+            } catch (e: Exception) {
+                logger.warning("Failed to register PlaceholderAPI expansion: ${e.message}")
             }
         }
 

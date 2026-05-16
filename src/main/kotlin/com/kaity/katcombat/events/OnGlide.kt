@@ -12,14 +12,12 @@ class OnGlide(private val combat: Combat) : Listener {
     fun onToggleGlide(e: EntityToggleGlideEvent) {
         val player = e.entity as? Player ?: return
         if (!combat.isInCombat(player)) return
-        
+
         val session = combat.getSession(player) ?: return
-        
+
         if (e.isGliding) {
-            // Started gliding
             session.elytraStartLocation = player.location
         } else {
-            // Stopped gliding
             session.elytraStartLocation = null
         }
     }

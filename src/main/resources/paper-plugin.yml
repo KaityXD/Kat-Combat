@@ -5,7 +5,7 @@ api-version: '1.21'
 folia-supported: true
 authors: [Kaity]
 description: A lightweight combat log plugin for Folia.
-load: STARTUP
+load: POSTWORLD
 dependencies:
   - name: PlaceholderAPI
     required: false
