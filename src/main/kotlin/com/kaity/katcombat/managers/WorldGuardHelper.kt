@@ -17,10 +17,10 @@ object WorldGuardHelper {
 
         return try {
             val container = com.sk89q.worldguard.WorldGuard.getInstance().platform.regionContainer
-            val regionManager = container.get(com.sk89q.worldguard.bukkit.BukkitAdapter.adapt(location.world))
+            val regionManager = container.get(com.sk89q.worldedit.bukkit.BukkitAdapter.adapt(location.world))
                 ?: return true
-            val set = regionManager.getApplicableRegions(com.sk89q.worldguard.bukkit.BukkitAdapter.adapt(location))
-            val state = set.queryValue(null, com.sk89q.worldguard.protection.flags.Flags.PVP)
+            val set = regionManager.getApplicableRegions(com.sk89q.worldedit.bukkit.BukkitAdapter.adapt(location))
+            val state = set.queryState(null, com.sk89q.worldguard.protection.flags.Flags.PVP)
             state != com.sk89q.worldguard.protection.flags.StateFlag.State.DENY
         } catch (e: Exception) {
             true

@@ -22,18 +22,15 @@ dependencies {
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
+    // Explicit versions to resolve conflicts between WorldGuard strict constraints and Folia requirements
+    compileOnly("com.google.guava:guava:33.3.1-jre")
+    compileOnly("com.google.code.gson:gson:2.11.0")
+    compileOnly("it.unimi.dsi:fastutil:8.5.15")
 }
 
 kotlin {
     jvmToolchain(21)
-}
-
-configurations.all {
-    resolutionStrategy {
-        force("com.google.guava:guava:33.3.1-jre")
-        force("com.google.code.gson:gson:2.11.0")
-        force("it.unimi.dsi:fastutil:8.5.15")
-    }
 }
 
 tasks.shadowJar {
