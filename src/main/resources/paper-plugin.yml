@@ -10,3 +10,9 @@ dependencies:
   - name: PlaceholderAPI
     required: false
     load: BEFORE
+  - name: WorldGuard
+    required: false
+    load: BEFORE
+  - name: ProtocolLib
+    required: false
+    load: BEFORE

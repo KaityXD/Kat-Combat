@@ -24,6 +24,9 @@ messages:
   
   # short broadcast
   combat-logger-death: "<gradient:#ff5555:#cc0000>☠</gradient> <white><player></white> <gray>combat logged.</gray>"
+
+  # safe zone entry blocked
+  safezone-blocked: "<gradient:#ff5555:#cc0000>✖</gradient> <gray>You cannot enter safe zones while in combat.</gray>"
   
   # zero fluff kill feed
   player-killed: "<white><killer></white> <gradient:#ff5555:#cc0000>⚔</gradient> <white><player></white>"
@@ -69,6 +72,13 @@ settings:
   
   # Sound played when a player dies in combat. Set to "NONE" to disable.
   death-sound: "BLOCK_RESPAWN_ANCHOR_DEPLETE"
+
+  # Attack detection mode: damage (EntityDamageByEntityEvent) or packet (ProtocolLib USE_ENTITY packet)
+  # Packet mode requires ProtocolLib to be installed.
+  attack-detection-mode: damage
+
+  # Block players from entering safe zones (WorldGuard no-PvP regions) while in combat
+  block-safezone-entry: true
 
 # Blocked Commands (case-insensitive, no "/" prefix)
 blocked-commands:

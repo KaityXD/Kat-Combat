@@ -43,6 +43,12 @@ class Config(private val plugin: JavaPlugin) {
     val deathSound: String
         get() = config.getString("settings.death-sound", "ENTITY_LIGHTNING_BOLT_THUNDER") ?: "ENTITY_LIGHTNING_BOLT_THUNDER"
 
+    val attackDetectionMode: String
+        get() = (config.getString("settings.attack-detection-mode", "damage") ?: "damage").lowercase()
+
+    val blockSafezoneEntry: Boolean
+        get() = config.getBoolean("settings.block-safezone-entry", true)
+
     val whitelistMode: Boolean
         get() = config.getBoolean("whitelist-mode", false)
 
