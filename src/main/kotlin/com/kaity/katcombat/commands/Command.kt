@@ -62,5 +62,15 @@ class Command(private val plugin: KatCombat, private val combat: Combat) {
                 }
             }
             .register(plugin)
+
+        CommandBuilder("kcview", "View a player's death inventory")
+            .execute { player, args ->
+                if (args.isEmpty()) {
+                    player.sendMessageMini("<red>Usage: /kcview <key>")
+                    return@execute
+                }
+                plugin.inventoryViewer.openInventory(player, args[0])
+            }
+            .register(plugin)
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.Location
 data class Session(
     var endTime: Long,
     var killer: String?,
+    var combatStartTime: Long = System.currentTimeMillis(),
     var actionBarTask: ScheduledTask? = null,
     var elytraStartLocation: Location? = null,
     var originalFlightAllowed: Boolean = false,

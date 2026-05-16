@@ -2,6 +2,7 @@ package com.kaity.katcombat.events
 
 import com.kaity.katcombat.KatCombat
 import com.kaity.katcombat.managers.Combat
+import com.kaity.katcombat.managers.DeathMessageManager
 import com.kaity.katcombat.managers.Effects
 import com.kaity.katcombat.utils.Messages
 import org.bukkit.Material
@@ -26,7 +27,10 @@ class OnKilled(private val combat: Combat) : Listener {
 
         if (killer != null) {
             if (combat.isInCombat(victim) || combat.isInCombat(killer)) {
-                combat.handlePlayerKilled(killer, victim, e)
+                val inventoryKey = KatCombat.instance.inventoryViewer.createSnapshot(victim)
+                val session = combat.getSession(victim)
+                val deathMessage = DeathMessageManager.buildDeathMessage(killer, victim, session, inventoryKey, combat.config)
+                combat.handlePlayerKilled(killer, victim, e, deathMessage)
                 
                 // Play death sound
                 val soundName = combat.config.deathSound

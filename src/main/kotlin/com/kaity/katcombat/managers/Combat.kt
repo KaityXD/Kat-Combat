@@ -5,6 +5,7 @@ import com.kaity.katcombat.models.Session
 import com.kaity.katcombat.utils.Messages.sendActionBarMini
 import com.kaity.katcombat.utils.Messages.sendMessageMini
 import com.kaity.katcombat.utils.Placeholders
+import net.kyori.adventure.text.Component
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
@@ -117,15 +118,13 @@ class Combat(private val plugin: KatCombat, val config: Config) {
         }
     }
 
-    fun handlePlayerKilled(killer: Player, victim: Player, event: org.bukkit.event.entity.PlayerDeathEvent) {
-        val message = config.getMessage("player-killed")
-            .replace("<killer>", killer.name)
-            .replace("<player>", victim.name)
-        
+    fun handlePlayerKilled(killer: Player, victim: Player, event: org.bukkit.event.entity.PlayerDeathEvent, message: Component) {
         if (config.broadcastDeaths) {
-            event.deathMessage(com.kaity.katcombat.utils.Messages.parse(message))
+            event.deathMessage(message)
         } else {
             event.deathMessage(null)
+            killer.sendMessage(message)
+            victim.sendMessage(message)
         }
         
         if (config.logToConsole) {

@@ -5,12 +5,14 @@ import com.kaity.katcombat.commands.Command
 import com.kaity.katcombat.events.*
 import com.kaity.katcombat.managers.Combat
 import com.kaity.katcombat.managers.Config
+import com.kaity.katcombat.managers.InventoryViewer
 import com.kaity.katcombat.managers.WorldGuardHelper
 import org.bukkit.plugin.java.JavaPlugin
 
 class KatCombat : JavaPlugin() {
     lateinit var combat: Combat
     lateinit var config: Config
+    lateinit var inventoryViewer: InventoryViewer
 
     companion object {
         lateinit var instance: KatCombat
@@ -21,11 +23,13 @@ class KatCombat : JavaPlugin() {
         instance = this
         config = Config(this)
         combat = Combat(this, config)
+        inventoryViewer = InventoryViewer(this)
 
         WorldGuardHelper.init(this)
 
         Command(this, combat).register()
 
+        server.pluginManager.registerEvents(inventoryViewer, this)
         server.pluginManager.registerEvents(OnKilled(combat), this)
         server.pluginManager.registerEvents(OnDied(combat), this)
         server.pluginManager.registerEvents(OnAttacked(combat), this)
