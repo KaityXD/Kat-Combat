@@ -27,6 +27,7 @@ class OnKilled(private val combat: Combat) : Listener {
 
         if (killer != null) {
             if (combat.isInCombat(victim) || combat.isInCombat(killer)) {
+                // Snapshot is taken synchronously during PlayerDeathEvent, before the inventory is cleared.
                 val inventoryKey = KatCombat.instance.inventoryViewer.createSnapshot(victim)
                 val session = combat.getSession(victim)
                 val deathMessage = DeathMessageManager.buildDeathMessage(killer, victim, session, inventoryKey, combat.config)

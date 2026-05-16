@@ -7,7 +7,6 @@ import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import com.kaity.katcombat.models.Session
 
 object DeathMessageManager {
