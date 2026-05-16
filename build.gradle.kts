@@ -28,6 +28,14 @@ kotlin {
     jvmToolchain(21)
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("com.google.guava:guava:33.3.1-jre")
+        force("com.google.code.gson:gson:2.11.0")
+        force("it.unimi.dsi:fastutil:8.5.15")
+    }
+}
+
 tasks.shadowJar {
     archiveFileName.set("KatCombat-${version}.jar")
     relocate("kotlin", "com.kaity.katcombat.libs.kotlin")
